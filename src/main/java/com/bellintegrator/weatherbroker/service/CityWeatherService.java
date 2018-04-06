@@ -6,16 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ExampleService {
+public class CityWeatherService {
 
     private ExampleRepository repository;
 
     @Autowired
-    public ExampleService(ExampleRepository repository) {
+    public CityWeatherService(ExampleRepository repository) {
         this.repository = repository;
     }
 
-    public Example getExampleById(Long id) {
-        return repository.findById(id).get();
+    public void addCity(String cityName) {
+        repository.save(new Example(100, cityName));
     }
 }
