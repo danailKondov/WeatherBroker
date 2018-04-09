@@ -16,7 +16,7 @@ public class CityController {
     }
 
     @GetMapping(value = "/cityname")
-    public void getExample(@RequestParam("cityName") String cityName) {
-        service.addCity(cityName);
+    public void getWeatherForCity(@RequestParam("cityName") String cityName, @RequestParam("degreeParam") String degreeParam, @RequestParam("typeInfo") String typeInfo) {
+        service.getWeatherForCity(cityName, degreeParam, typeInfo);
     }
 }

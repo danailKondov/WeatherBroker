@@ -12,7 +12,15 @@
 <body>
 <h1>Enter city for weather info</h1>
 <form action="${pageContext.servletContext.contextPath}/weather/cityname">
-    <input type="text" name="cityName" placeholder="City name">
+    <lable><input type="text" name="cityName" required>Название города</lable><br/>
+    <fieldset> <legend><b>Единицы измерения температуры</b></legend>
+        <label><input type="radio" name="degreeParam" value="celsius" checked>градусы Цельсия</label>
+        <label><input type="radio" name="degreeParam" value="fahrenheit">градусы Фаренгейта</label>
+    </fieldset><br/>
+    <fieldset> <legend><b>Прогноз или текущее состояние?</b></legend>
+        <label><input type="radio" name="typeInfo" value="current" checked>текущее состояние</label>
+        <label><input type="radio" name="typeInfo" value="forecast">прогноз</label>
+    </fieldset><br/>
     <input type="submit" value="Submit">
 </form>
 </body>
