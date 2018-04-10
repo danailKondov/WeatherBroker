@@ -1,5 +1,10 @@
-CREATE TABLE IF NOT EXISTS Example (
+USE weather_broker;
+
+CREATE TABLE IF NOT EXISTS weather_condition (
 	id INTEGER PRIMARY KEY AUTO_INCREMENT,
-	some_int INTEGER ,
-	some_name VARCHAR(255)
+	version INTEGER ,
+  city VARCHAR(255),
+  date_condition DATETIME,
+  temp INTEGER,
+  description VARCHAR(255)
 );

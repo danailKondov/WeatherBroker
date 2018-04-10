@@ -1,5 +1,5 @@
 
-package com.bellintegrator.weatherbroker.views;
+package com.bellintegrator.weatherbroker.views.actual;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

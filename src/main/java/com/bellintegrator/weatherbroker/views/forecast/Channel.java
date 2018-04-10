@@ -1,5 +1,5 @@
 
-package com.bellintegrator.weatherbroker.views;
+package com.bellintegrator.weatherbroker.views.forecast;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -15,4 +15,5 @@ public class Channel {
     public void setItem(Item item) {
         this.item = item;
     }
+
 }
