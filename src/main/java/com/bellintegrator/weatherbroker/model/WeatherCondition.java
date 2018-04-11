@@ -45,7 +45,7 @@ public class WeatherCondition {
         try {
             date = format.parse(dateToParse);
         } catch (ParseException e) {
-            // логируем и выбрасываем свое исключение?
+            // TODO: логируем и выбрасываем свое исключение?
         }
     }
 
