@@ -72,6 +72,9 @@ public class WeatherForecast {
     }
 
     public void setForecasts(Set<ForecastForDay> forecasts) {
+        for (ForecastForDay forecast : forecasts) {
+            forecast.setForecast(this);
+        }
         this.forecasts = forecasts;
     }
 

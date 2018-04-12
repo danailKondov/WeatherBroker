@@ -18,6 +18,9 @@ import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.jndi.JndiTemplate;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -42,5 +45,16 @@ public class WeatherbrokerApplication extends SpringBootServletInitializer{
 		converter.setObjectMapper(mapper);
 		restTemplate.getMessageConverters().add(converter);
 		return restTemplate;
+	}
+
+	@Bean
+	public ViewResolver jspViewResolver() {
+		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+		viewResolver.setViewClass(JstlView.class);
+		viewResolver.setPrefix("/");
+		viewResolver.setSuffix(".jsp");
+		viewResolver.setContentType("text/html");
+//		viewResolver.setOrder(1000);
+		return viewResolver;
 	}
 }

@@ -5,12 +5,14 @@
   Time: 16:27
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <title>Enter city</title>
 </head>
 <body>
-<h1>Enter city for weather info</h1>
+<h1>Enter city for weather info</h1><br/>
+<h3>Be careful!</h3>
 <form action="${pageContext.servletContext.contextPath}/weather/cityname">
     <lable><input type="text" name="cityName" required>Название города</lable><br/>
     <fieldset> <legend><b>Единицы измерения температуры</b></legend>
@@ -22,6 +24,11 @@
         <label><input type="radio" name="typeInfo" value="forecast">прогноз</label>
     </fieldset><br/>
     <input type="submit" value="Submit">
-</form>
+</form><br/>
+<c:if test="${not empty exception.message}">
+    <p style="color: red;">
+        <c:out value="${exception.message}"/>
+    </p>
+</c:if>
 </body>
 </html>
