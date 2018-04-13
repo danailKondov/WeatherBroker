@@ -5,16 +5,14 @@ import com.bellintegrator.weatherbroker.views.forecast.Forecast;
 import com.bellintegrator.weatherbroker.views.forecast.WeatherForecastView;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "weather_forecast")
-public class WeatherForecast {
+public class WeatherForecast implements Serializable {
 
     @Id
     @GeneratedValue
@@ -80,5 +78,21 @@ public class WeatherForecast {
 
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WeatherForecast forecast = (WeatherForecast) o;
+        return Objects.equals(date, forecast.date) &&
+                Objects.equals(city, forecast.city) &&
+                Objects.equals(tempType, forecast.tempType);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(date, city, tempType);
     }
 }

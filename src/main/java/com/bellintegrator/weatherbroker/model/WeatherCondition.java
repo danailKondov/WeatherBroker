@@ -1,16 +1,19 @@
 package com.bellintegrator.weatherbroker.model;
 
+import com.bellintegrator.weatherbroker.exceptionhandler.exceptions.WeatherException;
 import com.bellintegrator.weatherbroker.views.actual.WeatherActualView;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 @Entity
 @Table(name = "weather_condition")
-public class WeatherCondition {
+public class WeatherCondition implements Serializable {
 
     @Id
     @GeneratedValue
@@ -45,7 +48,7 @@ public class WeatherCondition {
         try {
             date = format.parse(dateToParse);
         } catch (ParseException e) {
-            // TODO: логируем и выбрасываем свое исключение?
+            throw new WeatherException("Can't parse the date of the weather condition", e);
         }
     }
 
@@ -91,5 +94,23 @@ public class WeatherCondition {
 
     public void setTempType(String tempType) {
         this.tempType = tempType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WeatherCondition that = (WeatherCondition) o;
+        return Objects.equals(city, that.city) &&
+                Objects.equals(date, that.date) &&
+                Objects.equals(temp, that.temp) &&
+                Objects.equals(tempType, that.tempType) &&
+                Objects.equals(description, that.description);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(city, date, temp, tempType, description);
     }
 }

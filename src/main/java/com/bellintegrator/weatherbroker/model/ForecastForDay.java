@@ -1,8 +1,10 @@
 package com.bellintegrator.weatherbroker.model;
 
+import com.bellintegrator.weatherbroker.exceptionhandler.exceptions.WeatherException;
 import com.bellintegrator.weatherbroker.views.forecast.Forecast;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,7 +13,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "forecast_for_day")
-public class ForecastForDay {
+public class ForecastForDay implements Serializable{
 
     @Id
     @GeneratedValue
@@ -51,7 +53,7 @@ public class ForecastForDay {
         try {
             date = format.parse(forecast.getDate());
         } catch (ParseException e) {
-            // TODO: custom exception
+            throw new WeatherException("Can't parse the date of the weather forecast", e);
         }
     }
 
@@ -105,5 +107,23 @@ public class ForecastForDay {
 
     public void setForecast(WeatherForecast forecast) {
         this.forecast = forecast;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ForecastForDay forecast = (ForecastForDay) o;
+        return Objects.equals(date, forecast.date) &&
+                Objects.equals(dayOfWeek, forecast.dayOfWeek) &&
+                Objects.equals(highTemp, forecast.highTemp) &&
+                Objects.equals(lowTemp, forecast.lowTemp) &&
+                Objects.equals(description, forecast.description);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(date, dayOfWeek, highTemp, lowTemp, description);
     }
 }

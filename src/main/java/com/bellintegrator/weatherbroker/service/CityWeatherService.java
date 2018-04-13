@@ -1,4 +1,4 @@
-package com.bellintegrator.weatherbroker.service.impl;
+package com.bellintegrator.weatherbroker.service;
 
 public interface CityWeatherService {
 

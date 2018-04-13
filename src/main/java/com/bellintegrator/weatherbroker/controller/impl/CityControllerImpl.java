@@ -1,7 +1,8 @@
 package com.bellintegrator.weatherbroker.controller.impl;
 
 import com.bellintegrator.weatherbroker.controller.CityController;
-import com.bellintegrator.weatherbroker.service.CityWeatherServiceImpl;
+import com.bellintegrator.weatherbroker.service.CityWeatherService;
+import com.bellintegrator.weatherbroker.service.impl.CityWeatherServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,10 @@ public class CityControllerImpl implements CityController {
 
     private final Logger log = LoggerFactory.getLogger(CityControllerImpl.class);
 
-    private CityWeatherServiceImpl service;
+    private CityWeatherService service;
 
     @Autowired
-    public CityControllerImpl(CityWeatherServiceImpl service) {
+    public CityControllerImpl(CityWeatherService service) {
         this.service = service;
     }
 

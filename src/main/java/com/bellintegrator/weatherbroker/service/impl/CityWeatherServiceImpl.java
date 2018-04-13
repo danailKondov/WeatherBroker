@@ -1,15 +1,15 @@
-package com.bellintegrator.weatherbroker.service;
+package com.bellintegrator.weatherbroker.service.impl;
 
 import com.bellintegrator.weatherbroker.dao.WeatherConditionRepository;
 import com.bellintegrator.weatherbroker.dao.WeatherForecastRepository;
 import com.bellintegrator.weatherbroker.exceptionhandler.exceptions.WeatherException;
+import com.bellintegrator.weatherbroker.jms.WeatherJmsProducer;
 import com.bellintegrator.weatherbroker.model.ForecastForDay;
 import com.bellintegrator.weatherbroker.model.WeatherCondition;
 import com.bellintegrator.weatherbroker.model.WeatherForecast;
-import com.bellintegrator.weatherbroker.service.impl.CityWeatherService;
+import com.bellintegrator.weatherbroker.service.CityWeatherService;
 import com.bellintegrator.weatherbroker.views.actual.WeatherActualView;
 import com.bellintegrator.weatherbroker.views.forecast.Channel;
-import com.bellintegrator.weatherbroker.views.forecast.Forecast;
 import com.bellintegrator.weatherbroker.views.forecast.WeatherForecastView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,19 +30,16 @@ import java.util.*;
 public class CityWeatherServiceImpl implements CityWeatherService {
 
     private final Logger log = LoggerFactory.getLogger(CityWeatherServiceImpl.class);
+    private static final String TOPIC_NAME_ACTUAL_WEATHER = "weatherCondition.topic";
+    private static final String TOPIC_NAME_FORECAST_WEATHER = "weatherForecast.topic";
 
-    private WeatherConditionRepository actualConditionRepository;
-    private WeatherForecastRepository forecastRepository;
+    private WeatherJmsProducer jmsProducer;
     private RestTemplate restTemplate;
 
-
     @Autowired
-    public CityWeatherServiceImpl(WeatherConditionRepository actualConditionRepository,
-                                  RestTemplate restTemplate,
-                                  WeatherForecastRepository forecastRepository) {
-        this.actualConditionRepository = actualConditionRepository;
+    public CityWeatherServiceImpl(WeatherJmsProducer jmsProducer, RestTemplate restTemplate) {
+        this.jmsProducer = jmsProducer;
         this.restTemplate = restTemplate;
-        this.forecastRepository = forecastRepository;
     }
 
     /**
@@ -80,13 +77,14 @@ public class CityWeatherServiceImpl implements CityWeatherService {
                 "format=json&env= store://datatables.org/alltableswithkeys", WeatherForecastView.class, vars);
         WeatherForecastView view = result.getBody();
         log.info("Request result is ready");
+        WeatherForecast forecast = null;
         if (view.getQuery().getResults() != null) {
-            WeatherForecast forecast = transformDtoToEntity(cityName, degreeParam, view);
+            forecast = transformDtoToEntity(cityName, degreeParam, view);
             log.info("Forecast view transformed to DTO");
         } else {
             throw new WeatherException("Wrong city name!");
         }
-//            forecastRepository.save(forecast); // for test purposes - здесь отправляем в JMS
+        jmsProducer.sendWeatherForecast(TOPIC_NAME_FORECAST_WEATHER, forecast);
     }
 
     /**
@@ -104,13 +102,14 @@ public class CityWeatherServiceImpl implements CityWeatherService {
                 "format=json&env= store://datatables.org/alltableswithkeys", WeatherActualView.class, vars);
         WeatherActualView view = result.getBody();
         log.info("Request result is ready");
+        WeatherCondition weather = null;
         if (view.getQuery().getResults() != null) {
-            WeatherCondition weather = new WeatherCondition(view, cityName, degreeParam);
+            weather = new WeatherCondition(view, cityName, degreeParam);
             log.info("Actual weather condition view transformed to DTO");
         } else {
             throw new WeatherException("Wrong city name!");
         }
-//            actualConditionRepository.save(weather); // здесь отправляем в JMS - а пока тестим БД
+        jmsProducer.sendActualWeather(TOPIC_NAME_ACTUAL_WEATHER, weather);
     }
 
     private Map<String, String> setParamsForWeatherRequest(String cityName, String degreeParam, String typeInfo) {
@@ -138,7 +137,7 @@ public class CityWeatherServiceImpl implements CityWeatherService {
             try {
                 forecast.setDate(format.parse(view.getQuery().getCreated()));
             } catch (ParseException e) {
-                throw new WeatherException("Can't parse the date of the weather condition or forecast");
+                throw new WeatherException("Can't parse the date of the weather forecast", e);
             }
         }
         List<Channel> channels = view.getQuery().getResults().getChannel();
