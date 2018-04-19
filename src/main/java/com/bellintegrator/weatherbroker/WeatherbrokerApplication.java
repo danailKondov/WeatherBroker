@@ -1,7 +1,6 @@
 package com.bellintegrator.weatherbroker;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,11 +21,14 @@ import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jndi.JndiTemplate;
+import org.springframework.transaction.jta.JtaTransactionManager;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import javax.jms.ConnectionFactory;
+import javax.jms.XATopicConnectionFactory;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.text.SimpleDateFormat;
@@ -70,42 +72,66 @@ public class WeatherbrokerApplication extends SpringBootServletInitializer{
 		return viewResolver;
 	}
 
-	@Bean
-	public ActiveMQConnectionFactory connectionFactory(){
-		ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
-		connectionFactory.setBrokerURL(environment.getProperty("spring.activemq.broker-url"));
-		connectionFactory.setPassword(environment.getProperty("spring.activemq.password"));
-		connectionFactory.setUserName(environment.getProperty("spring.activemq.user"));
-//		connectionFactory.setTrustedPackages(new ArrayList(Arrays.asList((
-//				"com.bellintegrator.weatherbroker.model.ForecastForDay," +
-//				"com.bellintegrator.weatherbroker.model.WeatherForecast," +
-//				"com.bellintegrator.weatherbroker.model.WeatherCondition")
-//				.split(","))));
-		connectionFactory.setTrustAllPackages(true);
-		// When true the consumer will check for duplicate messages and properly
-		// handle the message to make sure that it is not processed twice inadvertently.
-		connectionFactory.setCheckForDuplicates(true);
-		// The size of the message window that will be audited for duplicates and out of order messages.
-		connectionFactory.setAuditDepth(10000);
-		// Maximum number of producers that will be audited.
-		connectionFactory.setAuditMaximumProducerNumber(128);
-		return connectionFactory;
-	}
+//	@Bean
+//	public JndiTemplate jndiTemplate() {
+//		JndiTemplate jndiTemplate = new JndiTemplate();
+//		return jndiTemplate;
+//	}
 
-	@Bean
-	public JmsTemplate jmsTemplate(){
-		JmsTemplate template = new JmsTemplate();
-		template.setConnectionFactory(connectionFactory());
-		template.setPubSubDomain(true); // pub/sub
-		return template;
-	}
+//	@Bean
+//	public ActiveMQConnectionFactory connectionFactory() {
+//		ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
+////		ConnectionFactory connectionFactory = (ConnectionFactory) jndiTemplate().lookup(environment.getProperty("spring.activemq.connectionfactory.jndi-name"));
+//		connectionFactory.setBrokerURL(environment.getProperty("spring.activemq.broker-url"));
+//		connectionFactory.setPassword(environment.getProperty("spring.activemq.password"));
+//		connectionFactory.setUserName(environment.getProperty("spring.activemq.user"));
+////		connectionFactory.setTrustedPackages(new ArrayList(Arrays.asList((
+////				"com.bellintegrator.weatherbroker.model.ForecastForDay," +
+////				"com.bellintegrator.weatherbroker.model.WeatherForecast," +
+////				"com.bellintegrator.weatherbroker.model.WeatherCondition")
+////				.split(","))));
+//		connectionFactory.setTrustAllPackages(true);
+//		// When true the consumer will check for duplicate messages and properly
+//		// handle the message to make sure that it is not processed twice inadvertently.
+//		connectionFactory.setCheckForDuplicates(true);
+//		// The size of the message window that will be audited for duplicates and out of order messages.
+//		connectionFactory.setAuditDepth(10000);
+//		// Maximum number of producers that will be audited.
+//		connectionFactory.setAuditMaximumProducerNumber(128);
+//		return connectionFactory;
+//	}
 
-	@Bean
-	public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
-		DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-		factory.setConnectionFactory(connectionFactory());
-		factory.setConcurrency("1-1");
-		factory.setPubSubDomain(true); // pub/sub
-		return factory;
-	}
+
+	// или просто ConnectionFactory?
+//	@Bean
+//	public XATopicConnectionFactory connectionFactory() throws NamingException {
+//		XATopicConnectionFactory connectionFactory = (XATopicConnectionFactory) jndiTemplate()
+//				.lookup(environment.getProperty("spring.artemis.connectionfactory.jndi-name"));
+//		return connectionFactory;
+//	}
+
+//	@Bean
+//	public JmsTemplate jmsTemplate() throws NamingException {
+//		JmsTemplate template = new JmsTemplate();
+////		template.setConnectionFactory(connectionFactory());
+//		template.setPubSubDomain(true); // pub/sub
+//		return template;
+//	}
+
+//	@Bean
+//	public JtaTransactionManager transactionManager() {
+//		return new JtaTransactionManager();
+//	}
+
+//	@Bean
+//	public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() throws NamingException {
+//		DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+////		factory.setConnectionFactory(connectionFactory());
+////		factory.setConcurrency("1-1");
+//		factory.setPubSubDomain(true); // pub/sub
+////		factory.setSessionTransacted(true); // Local resource transactions can simply be activated through the sessionTransacted flag
+//		// To configure a message listener container for XA transaction participation, you'll want to configure a JtaTransactionManager
+////		factory.setTransactionManager(set here!);
+//		return factory;
+//	}
 }

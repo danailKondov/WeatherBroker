@@ -28,12 +28,12 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-activemq</artifactId>
+			<artifactId>spring-boot-starter-artemis</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-broker</artifactId>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.apache.activemq</groupId>-->
+			<!--<artifactId>activemq-broker</artifactId>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -45,12 +45,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-tomcat</artifactId>
-				</exclusion>
-			</exclusions>
+			<!--<exclusions>-->
+				<!--<exclusion>-->
+					<!--<groupId>org.springframework.boot</groupId>-->
+					<!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
+				<!--</exclusion>-->
+			<!--</exclusions>-->
 		</dependency>
 		<!--<dependency>-->
 			<!--<groupId>org.springframework.cloud</groupId>-->
@@ -76,23 +76,23 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>javax.servlet</groupId>-->
+			<!--<artifactId>servlet-api</artifactId>-->
+			<!--<version>2.5</version>-->
+		<!--</dependency>-->
 		<!-- https://mvnrepository.com/artifact/jstl/jstl -->
-		<dependency>
-			<groupId>jstl</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>jstl</groupId>-->
+			<!--<artifactId>jstl</artifactId>-->
+			<!--<version>1.2</version>-->
+		<!--</dependency>-->
 		<!-- https://mvnrepository.com/artifact/taglibs/standard -->
-		<dependency>
-			<groupId>taglibs</groupId>
-			<artifactId>standard</artifactId>
-			<version>1.1.2</version>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>taglibs</groupId>-->
+			<!--<artifactId>standard</artifactId>-->
+			<!--<version>1.1.2</version>-->
+		<!--</dependency>-->
 
 	</dependencies>
 

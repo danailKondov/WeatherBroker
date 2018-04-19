@@ -26,7 +26,7 @@ public class WeatherJmsListener {
         this.forecastRepository = forecastRepository;
     }
 
-    @JmsListener(destination = "weatherCondition.topic")
+    @JmsListener(destination = "weathercondition")
     @Transactional
     public void receiveWeatherCondition(final WeatherCondition condition) {
         log.info("Jms listener received WeatherCondition");
@@ -34,7 +34,7 @@ public class WeatherJmsListener {
         log.info("WeatherCondition was saved in DB");
     }
 
-    @JmsListener(destination = "weatherForecast.topic")
+    @JmsListener(destination = "weatherforecast")
     @Transactional
     public void receiveWeatherForecast(final WeatherForecast forecast) {
         log.info("Jms listener received WeatherForecast");

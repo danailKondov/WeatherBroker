@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +31,8 @@ import java.util.*;
 public class CityWeatherServiceImpl implements CityWeatherService {
 
     private final Logger log = LoggerFactory.getLogger(CityWeatherServiceImpl.class);
-    private static final String TOPIC_NAME_ACTUAL_WEATHER = "weatherCondition.topic";
-    private static final String TOPIC_NAME_FORECAST_WEATHER = "weatherForecast.topic";
+    private static final String TOPIC_NAME_ACTUAL_WEATHER = "weathercondition";
+    private static final String TOPIC_NAME_FORECAST_WEATHER = "weatherforecast";
 
     private WeatherJmsProducer jmsProducer;
     private RestTemplate restTemplate;
