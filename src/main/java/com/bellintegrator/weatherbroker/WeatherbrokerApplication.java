@@ -36,9 +36,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 @SpringBootApplication // @SpringBootApplication Equivalent to using @Configuration, @EnableAutoConfiguration and @ComponentScan with their default attributes
-@EnableJms
-@Configuration
-@ComponentScan("com.bellintegrator.weatherbroker")
+//@EnableJms // !!! эта аннотация лишняя, она создает еще один бин, который является листенером и пишет в БД
+//@Configuration
+//@ComponentScan("com.bellintegrator.weatherbroker")
 @PropertySource("classpath:application.properties")
 public class WeatherbrokerApplication extends SpringBootServletInitializer{
 
